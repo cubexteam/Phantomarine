@@ -1,0 +1,23 @@
+<?php
+
+/*
+ * Phantomarine Core
+ * @author SantianDev
+ */
+
+namespace pocketmine\event\player;
+
+use pocketmine\event\Cancellable;
+use pocketmine\Player;
+class PlayerGameModeChangeEvent extends PlayerEvent implements Cancellable{
+	public static $handlerList = null;
+	protected $gamemode;
+	public function __construct(Player $player, $newGamemode){
+		$this->player = $player;
+		$this->gamemode = (int) $newGamemode;
+	}
+	public function getNewGamemode(){
+		return $this->gamemode;
+	}
+
+}

@@ -1,0 +1,43 @@
+<?php
+
+/*
+ * Phantomarine Core
+ * @author SantianDev
+ */
+
+namespace pocketmine\network\mcpe\protocol;
+
+#include <rules/DataPacket.h>
+
+
+class MobEffectPacket extends DataPacket{
+
+	const NETWORK_ID = ProtocolInfo::MOB_EFFECT_PACKET;
+
+	const EVENT_ADD = 1;
+	const EVENT_MODIFY = 2;
+	const EVENT_REMOVE = 3;
+
+	public $entityRuntimeId;
+	public $eventId;
+	public $effectId;
+	public $amplifier = 0;
+	public $particles = true;
+	public $duration = 0;
+	public function decode(){
+
+	}
+	public function encode(){
+		$this->reset();
+		$this->putEntityId($this->entityRuntimeId);
+		$this->putByte($this->eventId);
+		$this->putVarInt($this->effectId);
+		$this->putVarInt($this->amplifier);
+		$this->putBool($this->particles);
+		$this->putVarInt($this->duration);
+	}
+	public function getName(){
+		return "MobEffectPacket";
+	}
+
+}

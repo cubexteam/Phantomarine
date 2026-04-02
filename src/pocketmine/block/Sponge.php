@@ -1,0 +1,84 @@
+<?php
+
+/*
+ * Phantomarine Core
+ * @author SantianDev
+ */
+
+namespace pocketmine\block;
+
+use pocketmine\item\Item;
+use pocketmine\math\Vector3;
+use pocketmine\Server;
+
+class Sponge extends Solid{
+
+	protected $id = self::SPONGE;
+	protected $absorbRange = 6;
+	public function __construct($meta = 0){
+		$this->meta = $meta;
+	}
+	public function getHardness(){
+		return 0.6;
+	}
+
+	public function absorbWater(){
+		if(Server::getInstance()->absorbWater){
+			$range = $this->absorbRange / 2;
+			for($xx = -$range; $xx <= $range; $xx++){
+				for($yy = -$range; $yy <= $range; $yy++){
+					for($zz = -$range; $zz <= $range; $zz++){
+						$block = $this->getLevel()->getBlockAt($this->x + $xx, $this->y + $yy, $this->z + $zz);
+						if($block->getId() === Block::WATER) $this->getLevel()->setBlock($block, BlockFactory::get(Block::AIR), true, true);
+						if($block->getId() === Block::STILL_WATER) $this->getLevel()->setBlock($block, BlockFactory::get(Block::AIR), true, true);
+					}
+				}
+			}
+		}
+	}
+
+	public function onNearbyBlockChange() : void{
+		if($this->meta == 0){
+			$blockAbove = $this->getSide(Vector3::SIDE_UP)->getId();
+			$blockBeneath = $this->getSide(Vector3::SIDE_DOWN)->getId();
+			$blockNorth = $this->getSide(Vector3::SIDE_NORTH)->getId();
+			$blockSouth = $this->getSide(Vector3::SIDE_SOUTH)->getId();
+			$blockEast = $this->getSide(Vector3::SIDE_EAST)->getId();
+			$blockWest = $this->getSide(Vector3::SIDE_WEST)->getId();
+
+			if($blockAbove === Block::WATER ||
+				$blockBeneath === Block::WATER ||
+				$blockNorth === Block::WATER ||
+				$blockSouth === Block::WATER ||
+				$blockEast === Block::WATER ||
+				$blockWest === Block::WATER
+			){
+				$this->absorbWater();
+				$this->getLevel()->setBlock($this, BlockFactory::get(Block::SPONGE, 1), true, true);
+			}
+
+			if($blockAbove === Block::STILL_WATER ||
+				$blockBeneath === Block::STILL_WATER ||
+				$blockNorth === Block::STILL_WATER ||
+				$blockSouth === Block::STILL_WATER ||
+				$blockEast === Block::STILL_WATER ||
+				$blockWest === Block::STILL_WATER
+			){
+				$this->absorbWater();
+				$this->getLevel()->setBlock($this, BlockFactory::get(Block::SPONGE, 1), true, true);
+			}
+		}
+	}
+	public function getName() : string{
+		static $names = [
+			0 => "Sponge",
+			1 => "Wet Sponge",
+		];
+		return $names[$this->meta & 0x0f];
+	}
+	public function getDrops(Item $item) : array{
+		return [
+			[$this->id, $this->meta & 0x0f, 1],
+		];
+	}
+}

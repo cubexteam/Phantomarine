@@ -1,0 +1,17 @@
+<?php
+
+/*
+ * Phantomarine Core
+ * @author SantianDev
+ */
+
+namespace pocketmine\item;
+
+use pocketmine\block\BlockFactory;
+
+class MelonSeeds extends Item{
+	public function __construct($meta = 0, $count = 1){
+		$this->block = BlockFactory::get(Item::MELON_STEM);
+		parent::__construct(self::MELON_SEEDS, $meta, $count, "Melon Seeds");
+	}
+}

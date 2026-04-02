@@ -1,0 +1,16 @@
+<?php
+
+/*
+ * Phantomarine Core
+ * @author SantianDev
+ */
+
+namespace pocketmine\item;
+
+
+class Brick extends Item{
+	public function __construct($meta = 0, $count = 1){
+		parent::__construct(self::BRICK, $meta, $count, "Brick");
+	}
+
+}

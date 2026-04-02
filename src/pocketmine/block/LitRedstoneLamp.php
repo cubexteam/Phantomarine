@@ -1,0 +1,45 @@
+<?php
+
+/*
+ * Phantomarine Core
+ * @author SantianDev
+ */
+
+namespace pocketmine\block;
+
+use pocketmine\item\Item;
+use pocketmine\item\Tool;
+
+
+class LitRedstoneLamp extends Solid{
+	protected $id = self::LIT_REDSTONE_LAMP;
+	public function __construct($meta = 0){
+		$this->meta = $meta;
+	}
+	public function getName() : string{
+		return "Lit Redstone Lamp";
+	}
+	public function getLightLevel() : int{
+		return 15;
+	}
+	public function getHardness(){
+		return 0.3;
+	}
+	public function getToolType(){
+		return Tool::TYPE_PICKAXE;
+	}
+	public function getDrops(Item $item) : array{
+		return [
+			[Item::REDSTONE_LAMP, 0, 1],
+		];
+	}
+	public function turnOn(){
+		$this->meta = 0;
+		$this->getLevel()->setBlock($this, $this, true, false);
+		return true;
+	}
+	public function turnOff(){
+		$this->getLevel()->setBlock($this, new RedstoneLamp(), true, true);
+		return true;
+	}
+}
