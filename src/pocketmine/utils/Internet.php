@@ -56,27 +56,27 @@ class Internet{
 			return self::$ip;
 		}
 
-		$ip = self::getURL("http://api.ipify.org/
+		$ip = self::getURL("http://api.ipify.org/");
 		if($ip !== false){
 			return self::$ip = $ip;
 		}
 
-		$ip = self::getURL("http://checkip.dyndns.org/
+		$ip = self::getURL("http://checkip.dyndns.org/");
 		if($ip !== false and preg_match('#Current IP Address\: ([0-9a-fA-F\:\.]*)#', trim(strip_tags($ip)), $matches) > 0){
 			return self::$ip = $matches[1];
 		}
 
-		$ip = self::getURL("http://www.checkip.org/
+		$ip = self::getURL("http://www.checkip.org/");
 		if($ip !== false and preg_match('#">([0-9a-fA-F\:\.]*)</span>#', $ip, $matches) > 0){
 			return self::$ip = $matches[1];
 		}
 
-		$ip = self::getURL("http://checkmyip.org/
+		$ip = self::getURL("http://checkmyip.org/");
 		if($ip !== false and preg_match('#Your IP address is ([0-9a-fA-F\:\.]*)#', $ip, $matches) > 0){
 			return self::$ip = $matches[1];
 		}
 
-		$ip = self::getURL("http://ifconfig.me/ip
+		$ip = self::getURL("http://ifconfig.me/ip");
 		if($ip !== false and trim($ip) != ""){
 			return self::$ip = trim($ip);
 		}
