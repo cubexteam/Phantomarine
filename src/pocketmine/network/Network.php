@@ -213,7 +213,9 @@ class Network{
 		}
 
 		if($this->iptables){
-			shell_exec("iptables -A INPUT -s $address -j REJECT");
+			if(filter_var($address, FILTER_VALIDATE_IP)){
+				shell_exec("iptables -A INPUT -s " . escapeshellarg($address) . " -j REJECT");
+			}
 		}
 	}
 	public function unblockAddress($address){
@@ -224,7 +226,9 @@ class Network{
 		unset($this->block[$address]);
 
 		if($this->iptables){
-			shell_exec("iptables -A INPUT -s $address -j ACCEPT");
+			if(filter_var($address, FILTER_VALIDATE_IP)){
+				shell_exec("iptables -D INPUT -s " . escapeshellarg($address) . " -j REJECT");
+			}
 		}
 	}
 	public function unblockAllAddresses() : void{
