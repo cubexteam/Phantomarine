@@ -12,6 +12,7 @@ namespace pocketmine\network\rcon;
 use pocketmine\snooze\SleeperNotifier;
 use pocketmine\Thread;
 use pocketmine\utils\Binary;
+use function hash_equals;
 use function count;
 use function ltrim;
 use function microtime;
@@ -155,7 +156,7 @@ class RCONInstance extends Thread{
 									$disconnect[$id] = $sock;
 									break;
 								}
-								if($payload === $this->password){
+								if(hash_equals($this->password, $payload)){
 									socket_getpeername($sock, $addr, $port);
 									$this->logger->info("Successful Rcon connection from: /$addr:$port");
 									$this->writePacket($sock, $requestID, 2, "");
@@ -163,6 +164,8 @@ class RCONInstance extends Thread{
 								}else{
 									$disconnect[$id] = $sock;
 									$this->writePacket($sock, -1, 2, "");
+									// Anti brute-force delay
+									usleep(500000);
 								}
 								break;
 							case 2:
