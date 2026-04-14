@@ -702,7 +702,7 @@ class Server{
 		unset($this->levels[$level->getId()]);
 	}
 	public function loadLevel(string $name) : bool{
-		if(trim($name) === ""){
+		if(trim($name) === "" or strpos($name, "..") !== false or strpos($name, "/") !== false or strpos($name, "\\") !== false){
 			throw new LevelException("Invalid empty level name");
 		}
 		if($this->isLevelLoaded($name)){
@@ -812,7 +812,7 @@ class Server{
 		return true;
 	}
 	public function isLevelGenerated($name){
-		if(trim($name) === ""){
+		if(trim($name) === "" or strpos($name, "..") !== false or strpos($name, "/") !== false or strpos($name, "\\") !== false){
 			return false;
 		}
 		$path = $this->getDataPath() . "worlds/" . $name . "/";
