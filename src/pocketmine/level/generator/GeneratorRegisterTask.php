@@ -37,7 +37,7 @@ class GeneratorRegisterTask extends AsyncTask{
 		Biome::init();
 		$manager = new SimpleChunkManager($this->seed, $this->waterHeight, $this->worldHeight);
 		$this->worker->saveToThreadStore("generation.level{$this->levelId}.manager", $manager);
-		$generator = new $this->generatorClass(unserialize($this->settings));
+		$generator = new $this->generatorClass(unserialize($this->settings, ["allowed_classes" => false]));
 		$generator->init($manager, new Random($manager->getSeed()));
 		$this->worker->saveToThreadStore("generation.level{$this->levelId}.generator", $generator);
 	}
