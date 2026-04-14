@@ -98,7 +98,7 @@ class Config{
 						$this->config = yaml_parse($content);
 						break;
 					case Config::SERIALIZED:
-						$this->config = unserialize($content);
+						$this->config = unserialize($content, ["allowed_classes" => false]);
 						break;
 					case Config::ENUM:
 						$this->parseList($content);
