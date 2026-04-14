@@ -44,8 +44,8 @@ class UUID{
 
 		return self::fromBinary($hash, 3);
 	}
-	public static function fromRandom(){
-		return self::fromData(Binary::writeInt(time()), Binary::writeShort(getmypid()), Binary::writeShort(getmyuid()), Binary::writeInt(mt_rand(-0x7fffffff, 0x7fffffff)), Binary::writeInt(mt_rand(-0x7fffffff, 0x7fffffff)));
+	public static function fromRandom() : UUID{
+		return self::fromBinary(random_bytes(16));
 	}
 	public function toBinary(){
 		return Binary::writeInt($this->parts[0]) . Binary::writeInt($this->parts[1]) . Binary::writeInt($this->parts[2]) . Binary::writeInt($this->parts[3]);
