@@ -31,13 +31,13 @@ class BossEventPacket extends DataPacket{
 	const TYPE_TEXTURE = 7;
 
 	public $entityRuntimeId;
-	public $type;
+	public $type = 0;
 	public $playerEid;
-	public $healthPercent;
-	public $title;
-	public $unknownShort;
-	public $color;
-	public $overlay;
+	public $healthPercent = 0;
+	public $title = "";
+	public $unknownShort = 0;
+	public $color = 0;
+	public $overlay = 0;
 	public function decode(){
 		$this->entityRuntimeId = $this->getEntityId();
 		$this->type = $this->getUnsignedVarInt();
